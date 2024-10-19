@@ -4,6 +4,8 @@ import com.department_service.department.DTO.DepartmentDto;
 import com.department_service.department.Entity.Department;
 import com.department_service.department.repository.DepartmentRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +38,9 @@ public class DepartmentService {
         Department dbycode=departmentRepository.findByDepartmentcode(dcode);
         DepartmentDto dBycode=new DepartmentDto(dbycode.getId(),dbycode.getDname(),dbycode.getDescription(),dbycode.getDepartmentcode());
         return dBycode;
+    }
+
+    public Page<Department> getpaginateddata(int page, int size) {
+        return departmentRepository.findAll(PageRequest.of(page, size));
     }
 }

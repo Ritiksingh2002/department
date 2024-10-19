@@ -1,8 +1,10 @@
 package com.department_service.department.Controller;
 
 import com.department_service.department.DTO.DepartmentDto;
+import com.department_service.department.Entity.Department;
 import com.department_service.department.Service.DepartmentService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,4 +34,10 @@ public class DepartmentController {
         DepartmentDto departmentDto= departmentService.getbydcode(dcode);
         return new ResponseEntity<>(departmentDto,HttpStatus.OK);
     }
+
+    @GetMapping("/Paginateddepartment")
+    public Page<Department> getPaginatedData(@RequestParam int page ,@RequestParam int size){
+        return departmentService.getpaginateddata(page,size);
+    }
+
 }
