@@ -36,8 +36,12 @@ public class DepartmentController {
     }
 
     @GetMapping("/Paginateddepartment")
-    public Page<Department> getPaginatedData(@RequestParam int page ,@RequestParam int size){
+    public Page<Department> getPaginatedData(@RequestParam int page  ,@RequestParam int size){
         return departmentService.getpaginateddata(page,size);
     }
+    @GetMapping("/deptWithPA")
+    public ResponseEntity<DepartmentDto> getDepartmentWithPendingApproval(){
+        return departmentService.getdeptWithPA();
 
+    }
 }

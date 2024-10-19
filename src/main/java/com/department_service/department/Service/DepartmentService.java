@@ -2,6 +2,7 @@ package com.department_service.department.Service;
 
 import com.department_service.department.DTO.DepartmentDto;
 import com.department_service.department.Entity.Department;
+import com.department_service.department.Exceptions.DepartmentNotFoundException;
 import com.department_service.department.repository.DepartmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,10 @@ public class DepartmentService {
     }
 
     public DepartmentDto getDepartments(Long id) {
-        Department savedDEpartment= departmentRepository.getReferenceById(id);
+        Department savedDEpartment= departmentRepository.findById(id).orElseThrow(()->
+                new DepartmentNotFoundException(id)
+        );
+
         DepartmentDto savedDepartmentDTo= new DepartmentDto(savedDEpartment.getId(),savedDEpartment.getDname(),savedDEpartment.getDescription(),savedDEpartment.getDepartmentcode());
         return savedDepartmentDTo;
 
@@ -42,5 +46,10 @@ public class DepartmentService {
 
     public Page<Department> getpaginateddata(int page, int size) {
         return departmentRepository.findAll(PageRequest.of(page, size));
+    }
+
+
+    public ResponseEntity<DepartmentDto> getdeptWithPA() {
+
     }
 }
