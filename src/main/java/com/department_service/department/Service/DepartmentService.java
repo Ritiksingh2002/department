@@ -5,16 +5,22 @@ import com.department_service.department.Entity.Department;
 import com.department_service.department.Exceptions.DepartmentNotFoundException;
 import com.department_service.department.repository.DepartmentRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-@AllArgsConstructor
+
 public class DepartmentService {
+    @Autowired
     private DepartmentRepository departmentRepository;
 
+    public DepartmentService() {
+    }
 
     public DepartmentDto saveDepartment(DepartmentDto departmentDto){
         //convert dto to entity
@@ -49,7 +55,7 @@ public class DepartmentService {
     }
 
 
-    public ResponseEntity<DepartmentDto> getdeptWithPA() {
-
+    public List<Department> getdeptWithPA(String approvalstatus) {
+        return departmentRepository.finddepartmentbyapprovalstatus(approvalstatus);
     }
 }

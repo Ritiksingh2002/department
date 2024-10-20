@@ -4,19 +4,26 @@ import com.department_service.department.DTO.DepartmentDto;
 import com.department_service.department.Entity.Department;
 import com.department_service.department.Service.DepartmentService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/departments")
 @AllArgsConstructor
 public class DepartmentController {
 
+    @Autowired
     private DepartmentService departmentService;
 
-    //build savedDepartment restAPi
+    public DepartmentController() {
+    }
+//build savedDepartment restAPi
 
     @PostMapping
     public ResponseEntity<DepartmentDto> saveDepartment(@RequestBody DepartmentDto departmentDto){
@@ -39,9 +46,13 @@ public class DepartmentController {
     public Page<Department> getPaginatedData(@RequestParam int page  ,@RequestParam int size){
         return departmentService.getpaginateddata(page,size);
     }
-    @GetMapping("/deptWithPA")
-    public ResponseEntity<DepartmentDto> getDepartmentWithPendingApproval(){
-        return departmentService.getdeptWithPA();
+    @GetMapping("/deptWithPA/{approvalstatus}")
+    public List<Department> getDepartmentWithPendingApproval(@PathVariable String approvalstatus ){
+       List<Department> responseList= departmentService.getdeptWithPA(approvalstatus);
+        if(responseList.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"no department found");
 
+        }
+        return responseList;
     }
 }
